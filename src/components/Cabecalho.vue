@@ -14,7 +14,7 @@
         </li>
 
         <li class="nav-item">
-          <RouterLink class="nav-link" to="/">Clientes</RouterLink>
+          <RouterLink class="nav-link" to="/clientes">Clientes</RouterLink>
         </li>
 
         <li class="nav-item">
