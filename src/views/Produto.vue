@@ -3,26 +3,26 @@ import { onMounted, ref } from 'vue';
 
     // iniciando o array produtos
     let produtos = ref([]);
-
-    // criando o objeto
-    let obj = ref({
-      'id': 0,
-      'nome_produto': '',
-      'categoria': '',
-      'valor_produto': ''
-    });
-
+    let produtosOriginal = ref([]);
+    let termoPesquisa = ref([]);
 
     onMounted(() => {
         fetch('http://localhost:8000/api/produtos/')
         .then(requisicao => requisicao.json())
-        .then(retorno => produtos.value = retorno.data)
+        .then(retorno => {
+          produtos.value = retorno.data;
+          produtosOriginal.value = retorno.data;
+        })
     });
 
     // função para remover
-    function remover() {
+    function remover(produto) {
 
-      fetch('http://localhost:8000/api/produtos/' + obj.value.id, {
+      if (!confirm(`Tem certeza que deseja excluir o produto "${produto.nome_produto}"?`)) {
+        return; 
+      }
+
+      fetch('http://localhost:8000/api/produtos/' + produto.id, {
         method:'DELETE',
         headers: {'Content-Type':'application/json'}
       })
@@ -30,39 +30,83 @@ import { onMounted, ref } from 'vue';
       .then(() => {
         
         let indiceProduto = produtos.value.findIndex(objP => {
-          return objP.id === obj.value.id;
+          return objP.id === produto.id;
         })
+
+        if (indiceProduto !== -1) {
+          produtos.value.splice(indiceProduto, 1);
+        }
       })
     }
+
+    // pesquisar
+    function pesquisar(event) {
+      if (!termoPesquisa.value.trim()) {
+        produtos.value = produtosOriginal.value;
+        return;
+      }
+
+      const termo = termoPesquisa.value.toLowerCase();
+      produtos.value = produtosOriginal.value.filter(produto =>
+        produto.nome_produto.toLowerCase().includes(termo) ||
+        produto.categoria.toLowerCase().includes(termo) ||
+        produto.valor_produto.toLowerCase().includes(termo)
+      );
+
+      event.preventDefault();
+      termoPesquisa.value = '';
+    }
+
 
 </script>
 
 <template>
 
 
-<h1 class="text-center pt-5 text-light">Lista de produtos</h1>
-<RouterLink class="text-center btn btn-success m-2" to="/cadastroprodutos">Cadastrar novo produto</RouterLink>
+<h1 class="text-center text-light" style="padding-top: 100px;">Lista de produtos</h1>
 
-<table class="table table-striped border border-black table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Nome do produtos</th>
-      <th scope="col">Categoria</th>
-      <th scope="col">Valor</th>
-      <th scope="col">Editar</th>
-      <th scope="col">Deletar</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="(p, indice) in produtos">
-      <td>{{ p.nome_produto }}</td>
-      <td>{{ p.categoria}}</td>
-      <td>{{ p.valor_produto }}</td>
-      <td><button class="btn btn-primary" @click="remover">Editar</button></td>
-      <td><RouterLink class="btn btn-danger">Deletar</RouterLink></td>
-    </tr>
-  </tbody>
-</table>
+
+<div class="d-flex aling-items-center">
+
+<RouterLink class="text-center btn btn-info m-2" to="/cadastroprodutos">
+  Cadastrar novo produto
+</RouterLink>
+<form class="d-flex m-2" role="search" @submit="pesquisar">
+      <input class="form-control me-2" type="search" placeholder="Pesquisar..." v-model="termoPesquisa">
+      <button class="btn btn-success" type="submit">Pesquisar</button>
+</form>
+
+</div>
+
+<div class="table-responsive shadow-sm rounded">
+  <table class="table table-striped border border-black table-hover">
+    <thead class="table-info">
+      <tr>
+        <th scope="col">Nome do produtos</th>
+        <th scope="col">Categoria</th>
+        <th scope="col">Valor</th>
+        <th scope="col">Editar</th>
+        <th scope="col">Deletar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(p, indice) in produtos">
+        <td>{{ p.nome_produto }}</td>
+        <td>{{ p.categoria}}</td>
+        <td>{{ p.valor_produto }}</td>
+        <td><RouterLink class="btn btn-outline-primary">Editar</RouterLink></td>
+        <td><button class="btn btn-outline-danger" @click="remover(p)">Deletar</button></td>
+      </tr>
+
+      <tr v-if="produtos.length === 0">
+        <td colspan="5" class="text-center py-3 text-muted">
+          Nenhum produto encontrado.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
 
 

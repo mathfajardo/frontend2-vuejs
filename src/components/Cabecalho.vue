@@ -1,7 +1,7 @@
 <template>
     
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
   <div class="container-fluid">
     <RouterLink class="navbar-brand" to="/">fajaloja</RouterLink>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,6 +15,10 @@
 
         <li class="nav-item">
           <RouterLink class="nav-link" to="/">Clientes</RouterLink>
+        </li>
+
+        <li class="nav-item">
+          <RouterLink class="nav-link" to="/">Relatórios</RouterLink>
         </li>
       </ul>
     </div>

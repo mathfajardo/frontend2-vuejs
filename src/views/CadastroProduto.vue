@@ -46,7 +46,7 @@ import { useRouter } from 'vue-router';
 
 <template>
 
-<h1 class="text-center pt-5 text-light">Cadastro</h1>
+<h1 class="text-center text-light" style="padding-top: 100px;">Cadastro</h1>
 
 
 <div class="bg-light p-3 rounded-3">
@@ -59,13 +59,13 @@ import { useRouter } from 'vue-router';
         <div class="mb-3">
             <label for="categoria" class="form-label">Categoria</label>
             <select class="form-select" id="categoria" v-model="obj.categoria">
-                <option selected>Selecione uma categoria</option>
-                <option value="cabos">Cabos</option>
-                <option value="monitores">Monitores</option>
-                <option value="teclados">Teclados</option>
-                <option value="gabinetes">Gabinetes</option>
-                <option value="mouses">Mouses</option>
-                <option value="hardware">Hardware</option>
+                <option selected>Outros</option>
+                <option value="Cabos">Cabos</option>
+                <option value="Monitores">Monitores</option>
+                <option value="Teclados">Teclados</option>
+                <option value="Gabinetes">Gabinetes</option>
+                <option value="Mouses">Mouses</option>
+                <option value="Hardware">Hardware</option>
             </select>
         </div>
 
