@@ -16,6 +16,10 @@ import { useRouter } from 'vue-router';
         .then(retorno => clientes.value = retorno.data)
     });
 
+    
+
+    
+
     // criando objeto para armazenar os dados antes do post
     let obj = ref({
         'id': 0,
@@ -60,11 +64,14 @@ import { useRouter } from 'vue-router';
             <label for="nome" class="form-label">Data de nascimetno</label>
             <input type="date" class="form-control" v-model="obj.data_nascimento">
         </div>
-
         <div class="mb-3">
-            <label for="1" class="form-label">Ativo</label>
-            <input type="text" class="form-control" v-model="obj.ativo">
+            <label for="categoria" class="form-label">Ativo</label>
+            <select class="form-select" id="categoria" v-model="obj.ativo">
+                <option value="1" selected>Sim</option>
+                <option value="0">Não</option>
+            </select>
         </div>
+        
 
         <button type="submit" class="btn btn-primary">Cadastrar</button>
 

@@ -93,7 +93,7 @@ import { onMounted, ref } from 'vue';
       <tr v-for="(p, indice) in produtos">
         <td>{{ p.nome_produto }}</td>
         <td>{{ p.categoria}}</td>
-        <td>{{ p.valor_produto }}</td>
+        <td>R$ {{ p.valor_produto }}</td>
         <td><RouterLink class="btn btn-outline-primary">Editar</RouterLink></td>
         <td><button class="btn btn-outline-danger" @click="remover(p)">Deletar</button></td>
       </tr>
