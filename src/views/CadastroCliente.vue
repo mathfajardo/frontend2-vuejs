@@ -8,36 +8,36 @@ import { useRouter } from 'vue-router';
     const router = useRouter();
 
     // vetor para armazenar os produtos
-    let produtos = ref([]);
+    let clientes = ref([]);
 
     onMounted(() => {
         fetch('http://localhost:8000/api/produtos/')
         .then(requisicao => requisicao.json())
-        .then(retorno => produtos.value = retorno.data)
+        .then(retorno => clientes.value = retorno.data)
     });
 
     // criando objeto para armazenar os dados antes do post
     let obj = ref({
         'id': 0,
-        'nome_produto': '',
-        'categoria': 'Selecione uma categoria',
-        'valor_produto': 0
+        'nome_cliente': '',
+        'data_nascimento': '',
+        'ativo': 0
     });
 
     // função para cadastrar
     function cadastrar_produto(event) {
         event.preventDefault();
 
-        fetch('http://localhost:8000/api/produtos/', {
+        fetch('http://localhost:8000/api/clientes/', {
             method: 'POST',
             body: JSON.stringify(obj.value),
             headers: {'Content-Type':'application/json'}
         })
         .then(requisicao =>requisicao.json())
         .then(retorno => {
-            produtos.value.push(retorno.data)
+            clientes.value.push(retorno.data)
 
-            router.push('/produtos')
+            router.push('/clientes')
         })
     }
 
@@ -52,26 +52,18 @@ import { useRouter } from 'vue-router';
 <div class="bg-body border p-3 rounded-3 shadow-sm">
     <form @submit="cadastrar_produto">
         <div class="mb-3">
-            <label for="nome" class="form-label">Nome do produto</label>
-            <input type="text" class="form-control" v-model="obj.nome_produto">
+            <label for="nome" class="form-label">Nome do cliente</label>
+            <input type="text" class="form-control" v-model="obj.nome_cliente">
         </div>
 
         <div class="mb-3">
-            <label for="categoria" class="form-label">Categoria</label>
-            <select class="form-select" id="categoria" v-model="obj.categoria">
-                <option selected>Outros</option>
-                <option value="Cabos">Cabos</option>
-                <option value="Monitores">Monitores</option>
-                <option value="Teclados">Teclados</option>
-                <option value="Gabinetes">Gabinetes</option>
-                <option value="Mouses">Mouses</option>
-                <option value="Hardware">Hardware</option>
-            </select>
+            <label for="nome" class="form-label">Data de nascimetno</label>
+            <input type="date" class="form-control" v-model="obj.data_nascimento">
         </div>
 
         <div class="mb-3">
-            <label for="1" class="form-label">Valor</label>
-            <input type="number" class="form-control" v-model="obj.valor_produto">
+            <label for="1" class="form-label">Ativo</label>
+            <input type="text" class="form-control" v-model="obj.ativo">
         </div>
 
         <button type="submit" class="btn btn-primary">Cadastrar</button>

@@ -2,39 +2,39 @@
 import { onMounted, ref } from 'vue';
 
     // iniciando o array produtos
-    let produtos = ref([]);
-    let produtosOriginal = ref([]);
+    let clientes = ref([]);
+    let clientesOriginal = ref([]);
     let termoPesquisa = ref([]);
 
     onMounted(() => {
-        fetch('http://localhost:8000/api/produtos/')
+        fetch('http://localhost:8000/api/clientes/')
         .then(requisicao => requisicao.json())
         .then(retorno => {
-          produtos.value = retorno.data;
-          produtosOriginal.value = retorno.data;
+          clientes.value = retorno.data;
+          clientesOriginal.value = retorno.data;
         })
     });
 
     // função para remover
-    function remover(produto) {
+    function remover(cliente) {
 
-      if (!confirm(`Tem certeza que deseja excluir o produto "${produto.nome_produto}"?`)) {
+      if (!confirm(`Tem certeza que deseja excluir o cliente "${cliente.nome_cliente}"?`)) {
         return; 
       }
 
-      fetch('http://localhost:8000/api/produtos/' + produto.id, {
+      fetch('http://localhost:8000/api/clientes/' + cliente.id, {
         method:'DELETE',
         headers: {'Content-Type':'application/json'}
       })
       .then(requisicao => requisicao.json())
       .then(() => {
         
-        let indiceProduto = produtos.value.findIndex(objP => {
-          return objP.id === produto.id;
+        let indiceCliente = clientes.value.findIndex(objP => {
+          return objP.id === cliente.id;
         })
 
-        if (indiceProduto !== -1) {
-          produtos.value.splice(indiceProduto, 1);
+        if (indiceCliente !== -1) {
+          clientes.value.splice(indiceCliente, 1);
         }
       })
     }
@@ -42,15 +42,15 @@ import { onMounted, ref } from 'vue';
     // pesquisar
     function pesquisar(event) {
       if (!termoPesquisa.value.trim()) {
-        produtos.value = produtosOriginal.value;
+        clientes.value = clientesOriginal.value;
         return;
       }
 
       const termo = termoPesquisa.value.toLowerCase();
-      produtos.value = produtosOriginal.value.filter(produto =>
-        produto.nome_produto.toLowerCase().includes(termo) ||
-        produto.categoria.toLowerCase().includes(termo) ||
-        produto.valor_produto.toLowerCase().includes(termo)
+      clientes.value = clientesOriginal.value.filter(cliente =>
+        cliente.nome_cliente.toLowerCase().includes(termo) ||
+        cliente.data_nascimento.toLowerCase().includes(termo) ||
+        cliente.ativo.toLowerCase().includes(termo)
       );
 
       event.preventDefault();
@@ -63,13 +63,13 @@ import { onMounted, ref } from 'vue';
 <template>
 
 
-<h1 class="text-center text-black" style="padding-top: 100px;">Lista de produtos</h1>
+<h1 class="text-center text-black" style="padding-top: 100px;">Lista de clientes</h1>
 
 
 <div class="d-flex aling-items-center">
 
-<RouterLink class="text-center btn btn-primary m-2" to="/cadastroprodutos">
-  Cadastrar novo produto
+<RouterLink class="text-center btn btn-primary m-2" to="/cadastroclientes">
+  Cadastrar novo cliente
 </RouterLink>
 <form class="d-flex m-2" role="search" @submit="pesquisar">
       <input class="form-control me-2" type="search" placeholder="Pesquisar..." v-model="termoPesquisa">
@@ -82,25 +82,25 @@ import { onMounted, ref } from 'vue';
   <table class="table border table-hover">
     <thead class="">
       <tr>
-        <th scope="col">Nome do produtos</th>
-        <th scope="col">Categoria</th>
-        <th scope="col">Valor</th>
+        <th scope="col">Nome do cliente</th>
+        <th scope="col">Data de nascimento</th>
+        <th scope="col">Ativo</th>
         <th scope="col">Editar</th>
         <th scope="col">Deletar</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(p, indice) in produtos">
-        <td>{{ p.nome_produto }}</td>
-        <td>{{ p.categoria}}</td>
-        <td>{{ p.valor_produto }}</td>
+      <tr v-for="(c, indice) in clientes">
+        <td>{{ c.nome_cliente }}</td>
+        <td>{{ c.data_nascimento}}</td>
+        <td>{{ c.ativo }}</td>
         <td><RouterLink class="btn btn-outline-primary">Editar</RouterLink></td>
-        <td><button class="btn btn-outline-danger" @click="remover(p)">Deletar</button></td>
+        <td><button class="btn btn-outline-danger" @click="remover(c)">Deletar</button></td>
       </tr>
 
-      <tr v-if="produtos.length === 0">
+      <tr v-if="clientes.length === 0">
         <td colspan="5" class="text-center py-3 text-muted">
-          Nenhum produto encontrado.
+          Nenhum cliente encontrado.
         </td>
       </tr>
     </tbody>
