@@ -4,10 +4,16 @@ import CadastroProduto from '@/views/CadastroProduto.vue'
 import Cliente from '@/views/Cliente.vue'
 import CadastroCliente from '@/views/CadastroCliente.vue'
 import Pdv from '@/views/Pdv.vue'
+import TelaLogin from '@/views/TelaLogin.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      name: 'login',
+      component: TelaLogin
+    },
     {
       path: '/pdv',
       name: 'pdv',
