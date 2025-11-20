@@ -5,6 +5,7 @@ import Cliente from '@/views/Cliente.vue'
 import CadastroCliente from '@/views/CadastroCliente.vue'
 import Pdv from '@/views/Pdv.vue'
 import TelaLogin from '@/views/TelaLogin.vue'
+import { useAuth } from '@/stores/auth';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,29 +18,66 @@ const router = createRouter({
     {
       path: '/pdv',
       name: 'pdv',
-      component: Pdv
+      component: Pdv,
+      meta: {
+        auth:true
+      }
     },
     {
       path: '/produtos',
       name: 'produtos',
-      component: Produto
+      component: Produto,
+      meta: {
+        auth:true
+      }
     },
     {
       path: '/cadastroprodutos',
       name: 'cadastroprodutos',
-      component: CadastroProduto
+      component: CadastroProduto,
+      meta: {
+        auth:true
+      }
     },
     {
       path: '/clientes',
       name: 'clientes',
-      component: Cliente
+      component: Cliente,
+      meta: {
+        auth:true
+      }
     },
     {
       path: '/cadastroclientes',
       name: 'cadastroclientes',
-      component: CadastroCliente
+      component: CadastroCliente,
+      meta: {
+        auth:true
+      }
     }
   ],
+})
+
+router.beforeEach(async (to, from, next) => {
+  if (to.meta?.auth) {
+    const auth = useAuth();
+    if (auth.token) {
+      try {
+        const autenticado = await auth.checkToken();
+        if (autenticado) {
+          next();
+        } else {
+          next({name: 'login'});
+        }
+      } catch (error) {
+        next({name: 'login'});
+      }
+    } else {
+      next({name: 'login'})
+    }
+  } else {
+    next();
+  }
 })
 
 export default router
