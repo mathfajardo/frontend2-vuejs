@@ -10,10 +10,10 @@ const axiosInstance = axios.create({
 // Interceptor para enviar token
 axiosInstance.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
-    console.log('🔐 Token no localStorage:', token); // ← DEBUG
+    console.log('Token no localStorage:', token); // ← DEBUG
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
-        console.log('📤 Enviando token nos headers'); // ← DEBUG
+        console.log('Enviando token nos headers'); // ← DEBUG
     }
     return config;
 });
@@ -21,11 +21,11 @@ axiosInstance.interceptors.request.use(config => {
 // Interceptor para ver respostas
 axiosInstance.interceptors.response.use(
     response => {
-        console.log('✅ Resposta OK:', response.status, response.config.url);
+        console.log('Resposta OK:', response.status, response.config.url);
         return response;
     },
     error => {
-        console.log('❌ Erro na resposta:', {
+        console.log('Erro na resposta:', {
             url: error.config?.url,
             status: error.response?.status,
             headers: error.config?.headers,

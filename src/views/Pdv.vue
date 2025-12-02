@@ -2,7 +2,8 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-
+    // carregamento
+    let carregamento = ref(true);
 
     const router = useRouter();
 
@@ -29,6 +30,7 @@ import { useRouter } from 'vue-router';
             const respostaClientes = await fetch('http://localhost:8000/api/clientes/');
             const dadosClientes = await respostaClientes.json();
             clientes.value = dadosClientes.data;
+            carregamento.value = false;
         } catch(erro) {
             console.error('erro ao carregar os dados da api: ', erro);
         }
@@ -91,9 +93,19 @@ import { useRouter } from 'vue-router';
 
 <template>
 
-<h1 class="text-center text-black" style="padding-top: 100px;">PDV - Registre sua venda</h1>
+<div
+    class="d-flex flex-column justify-content-center align-items-center"
+    v-if="carregamento"
+  >
+    <div class="spinner-border mb-3 mt-5" style="width: 4rem; height: 4rem">
+      <span class="visually-hidden">Aguarde...</span>
+    </div>
+    <p class="text-muted">Aguarde...</p>
+</div>
 
-<div class="bg-info-subtle border p-3 rounded-3 shadow-sm">
+<h1 class="text-center text-black pt-5" v-if="!carregamento">PDV - Registre sua venda</h1>
+
+<div class="bg-light border p-3 rounded-3 shadow-sm" v-if="!carregamento">
     <form @submit="registrarVenda">
         <div class="mb-3">
             <label for="produto" class="form-label">Selecione o produto</label>

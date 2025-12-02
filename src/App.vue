@@ -9,7 +9,7 @@
 
 <template>
   <Cabecalho></Cabecalho>
-  <div class="bg-light bg-gradient min-vh-100">
+  <div class="bg-body-secondary bg-gradient min-vh-100">
     <div class="container">
     
     <RouterView></RouterView>
