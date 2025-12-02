@@ -1,0 +1,18 @@
+.form-control {
+    border-radius: 0px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: blue;
+    box-shadow: none;
+}
+
+.btn {
+    border-radius: 0px;
+}
+
+.bg-preto {
+    background-color: black !important;
+}
+
+

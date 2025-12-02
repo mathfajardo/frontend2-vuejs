@@ -72,16 +72,6 @@ import axiosInstance from '@/services/http';
 </script>
 
 <template>
-<div
-    v-if="message && !carregamento"
-    :class="`alert alert-${
-      messageType === 'error' ? 'danger' : messageType
-    } alert-dismissible fade show`"
-    role="alert"
-  >
-    {{ message }}
-    <button type="button" class="btn-close" @click="message = ''"></button>
-</div>
 
 <div
     class="d-flex flex-column justify-content-center align-items-center"
@@ -95,7 +85,16 @@ import axiosInstance from '@/services/http';
 
 <h1 class="text-center text-black pt-5" v-if="!carregamento">Lista de produtos</h1>
 
-
+<div
+    v-if="message && !carregamento"
+    :class="`alert alert-${
+      messageType === 'error' ? 'danger' : messageType
+    } alert-dismissible fade show`"
+    role="alert"
+  >
+    {{ message }}
+    <button type="button" class="btn-close" @click="message = ''"></button>
+</div>
 <div class="d-flex aling-items-center" v-if="!carregamento">
 
 <RouterLink class="text-center btn btn-primary m-2" to="/cadastroprodutos">

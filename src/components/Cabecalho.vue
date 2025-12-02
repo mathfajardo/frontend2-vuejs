@@ -23,15 +23,11 @@ async function fazerLogout() {
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <RouterLink class="nav-link" to="/produtos">Produtos</RouterLink>
+          <RouterLink class="nav-link" active-class="text-success" to="/produtos">Produtos</RouterLink>
         </li>
 
         <li class="nav-item">
-          <RouterLink class="nav-link" to="/clientes">Clientes</RouterLink>
-        </li>
-
-        <li class="nav-item">
-          <RouterLink class="nav-link" to="/">Relatórios</RouterLink>
+          <RouterLink class="nav-link" active-class="text-success" to="/clientes">Clientes</RouterLink>
         </li>
 
         <li class="nav-item">
