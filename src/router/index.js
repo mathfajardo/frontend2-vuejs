@@ -6,6 +6,7 @@ import CadastroCliente from '@/views/CadastroCliente.vue'
 import Pdv from '@/views/Pdv.vue'
 import TelaLogin from '@/views/TelaLogin.vue'
 import { useAuth } from '@/stores/auth';
+import TelaRegistro from '@/views/TelaRegistro.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,14 @@ const router = createRouter({
       path: '/',
       name: 'login',
       component: TelaLogin,
+      meta: {
+        esconderCabecalho: true
+      }
+    },
+    {
+      path: '/registro',
+      name: 'registro',
+      component: TelaRegistro,
       meta: {
         esconderCabecalho: true
       }

@@ -74,10 +74,12 @@ async function login() {
   </div>
 
   <div class="mb-3">
-    <router-link class="link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" to="/">Não tem login? cadastre aqui </router-link>
+    <router-link class="link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" to="/registro">Não tem login? cadastre aqui </router-link>
   </div>
   
-  <button type="submit" class="btn btn-primary">{{ loading ? 'Entrando...' : 'Entrar' }}</button>
+  <button type="submit" class="btn btn-primary">
+    <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>{{ loading ? 'Entrando...' : 'Entrar' }}
+  </button>
 </form>
 
 
