@@ -1,41 +1,52 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import axiosInstance from '@/services/http';
 
     // iniciando o array produtos
     let produtos = ref([]);
     let produtosOriginal = ref([]);
-    let termoPesquisa = ref([]);
+    let termoPesquisa = ref('');
+
+    // carregamento
+    let carregamento = ref(true);
+
+    // função para enviar alert
+    let message = ref('');
+    let messageType = ref('success');
+    function showMessage(text, type = "success") {
+    message.value = text;
+    messageType.value = type;
+    setTimeout(() => {
+      message.value = "";
+      }, 5000);
+    } 
 
     onMounted(() => {
-        fetch('http://localhost:8000/api/produtos/')
-        .then(requisicao => requisicao.json())
-        .then(retorno => {
-          produtos.value = retorno.data;
-          produtosOriginal.value = retorno.data;
+        axiosInstance.get('/produtos/')
+        .then(response => {
+          produtos.value = response.data.data;
+          produtosOriginal.value = response.data.data;
+          carregamento.value = false;
+        })
+        .catch(error => {
+          console.error('Erro: ', error);
+          carregamento.value = false;
         })
     });
 
     // função para remover
     function remover(produto) {
 
-      if (!confirm(`Tem certeza que deseja excluir o produto "${produto.nome_produto}"?`)) {
-        return; 
-      }
-
-      fetch('http://localhost:8000/api/produtos/' + produto.id, {
-        method:'DELETE',
-        headers: {'Content-Type':'application/json'}
+      axiosInstance.delete(`/produtos/${produto.id}`)
+      .then((response) => {
+        produtos.value = produtos.value.filter(p => p.id !== produto.id);
+        produtosOriginal.value = produtosOriginal.value.filter(p => p.id !== produto.id);
+        console.log(response.data);
+        showMessage(response.data.message, 'success');
       })
-      .then(requisicao => requisicao.json())
-      .then(() => {
-        
-        let indiceProduto = produtos.value.findIndex(objP => {
-          return objP.id === produto.id;
-        })
-
-        if (indiceProduto !== -1) {
-          produtos.value.splice(indiceProduto, 1);
-        }
+      .catch(error => {
+        console.error('Erro: ', error);
+        showMessage('Erro ao deletar', 'error')
       })
     }
 
@@ -61,12 +72,31 @@ import { onMounted, ref } from 'vue';
 </script>
 
 <template>
+<div
+    v-if="message && !carregamento"
+    :class="`alert alert-${
+      messageType === 'error' ? 'danger' : messageType
+    } alert-dismissible fade show`"
+    role="alert"
+  >
+    {{ message }}
+    <button type="button" class="btn-close" @click="message = ''"></button>
+</div>
+
+<div
+    class="d-flex flex-column justify-content-center align-items-center"
+    v-if="carregamento"
+  >
+    <div class="spinner-border mb-3 mt-5" style="width: 4rem; height: 4rem">
+      <span class="visually-hidden">Aguarde...</span>
+    </div>
+    <p class="text-muted">Aguarde...</p>
+</div>
+
+<h1 class="text-center text-black pt-5" v-if="!carregamento">Lista de produtos</h1>
 
 
-<h1 class="text-center text-black" style="padding-top: 100px;">Lista de produtos</h1>
-
-
-<div class="d-flex aling-items-center">
+<div class="d-flex aling-items-center" v-if="!carregamento">
 
 <RouterLink class="text-center btn btn-primary m-2" to="/cadastroprodutos">
   Cadastrar novo produto
@@ -78,7 +108,7 @@ import { onMounted, ref } from 'vue';
 
 </div>
 
-<div class="table-responsive shadow-sm ">
+<div class="table-responsive shadow-sm " v-if="!carregamento">
   <table class="table border table-hover">
     <thead class="">
       <tr>

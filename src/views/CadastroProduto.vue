@@ -1,20 +1,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-
+import axiosInstance from '@/services/http';
 
     // iniciando o router
     const router = useRouter();
-
-    // vetor para armazenar os produtos
-    let produtos = ref([]);
-
-    onMounted(() => {
-        fetch('http://localhost:8000/api/produtos/')
-        .then(requisicao => requisicao.json())
-        .then(retorno => produtos.value = retorno.data)
-    });
 
     // criando objeto para armazenar os dados antes do post
     let obj = ref({
@@ -28,17 +18,13 @@ import { useRouter } from 'vue-router';
     function cadastrar_produto(event) {
         event.preventDefault();
 
-        fetch('http://localhost:8000/api/produtos/', {
-            method: 'POST',
-            body: JSON.stringify(obj.value),
-            headers: {'Content-Type':'application/json'}
-        })
-        .then(requisicao =>requisicao.json())
-        .then(retorno => {
-            produtos.value.push(retorno.data)
-
+        axiosInstance.post('/produtos/', obj.value)
+        .then(response => {
             router.push('/produtos')
         })
+        .catch(error => {
+            console.error('Erro: ', error);
+        }) 
     }
 
 

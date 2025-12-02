@@ -1,41 +1,52 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import axiosInstance from '@/services/http';
 
     // iniciando o array produtos
     let clientes = ref([]);
     let clientesOriginal = ref([]);
     let termoPesquisa = ref([]);
 
+    // carregamento
+    let carregamento = ref(true);
+
+    // função para enviar alert
+    let message = ref('');
+    let messageType = ref('success');
+    function showMessage(text, type = "success") {
+    message.value = text;
+    messageType.value = type;
+    setTimeout(() => {
+      message.value = "";
+      }, 5000);
+    } 
+
     onMounted(() => {
-        fetch('http://localhost:8000/api/clientes/')
-        .then(requisicao => requisicao.json())
-        .then(retorno => {
-          clientes.value = retorno.data;
-          clientesOriginal.value = retorno.data;
+        axiosInstance.get('/clientes/')
+        .then((response) => {
+          clientes.value = response.data.data;
+          clientesOriginal.value = response.data.data;
+          carregamento.value = false;
+        })
+        .catch(error => {
+          console.error('Erro: ', error);
+          carregamento.value = false;
         })
     });
 
     // função para remover
     function remover(cliente) {
 
-      if (!confirm(`Tem certeza que deseja excluir o cliente "${cliente.nome_cliente}"?`)) {
-        return; 
-      }
-
-      fetch('http://localhost:8000/api/clientes/' + cliente.id, {
-        method:'DELETE',
-        headers: {'Content-Type':'application/json'}
+      axiosInstance.delete(`/clientes/${cliente.id}`)
+      .then((response) => {
+        clientes.value = clientes.value.filter(c => c.id !== cliente.id);
+        clientesOriginal.value = clientesOriginal.value.filter(c => c.id !== cliente.id);
+        console.log(response.data);
+        showMessage(response.data.message, 'success');
       })
-      .then(requisicao => requisicao.json())
-      .then(() => {
-        
-        let indiceCliente = clientes.value.findIndex(objP => {
-          return objP.id === cliente.id;
-        })
-
-        if (indiceCliente !== -1) {
-          clientes.value.splice(indiceCliente, 1);
-        }
+      .catch(error => {
+        console.error('Erro: ', error);
+        showMessage('Erro ao deletar', 'error')
       })
     }
 
@@ -61,12 +72,32 @@ import { onMounted, ref } from 'vue';
 </script>
 
 <template>
+<div
+    v-if="message && !carregamento"
+    :class="`alert alert-${
+      messageType === 'error' ? 'danger' : messageType
+    } alert-dismissible fade show`"
+    role="alert"
+  >
+    {{ message }}
+    <button type="button" class="btn-close" @click="message = ''"></button>
+</div>
+
+<div
+    class="d-flex flex-column justify-content-center align-items-center"
+    v-if="carregamento"
+  >
+    <div class="spinner-border mb-3 mt-5" style="width: 4rem; height: 4rem">
+      <span class="visually-hidden">Aguarde...</span>
+    </div>
+    <p class="text-muted">Aguarde...</p>
+</div>
 
 
-<h1 class="text-center text-black" style="padding-top: 100px;">Lista de clientes</h1>
+<h1 class="text-center text-black pt-5" v-if="!carregamento">Lista de clientes</h1>
 
 
-<div class="d-flex aling-items-center">
+<div class="d-flex aling-items-center" v-if="!carregamento">
 
 <RouterLink class="text-center btn btn-primary m-2" to="/cadastroclientes">
   Cadastrar novo cliente
@@ -78,7 +109,7 @@ import { onMounted, ref } from 'vue';
 
 </div>
 
-<div class="table-responsive shadow-sm ">
+<div class="table-responsive shadow-sm " v-if="!carregamento">
   <table class="table border table-hover">
     <thead class="">
       <tr>

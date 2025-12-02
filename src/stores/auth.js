@@ -26,9 +26,26 @@ export const useAuth = defineStore('auth', () => {
         }
     }
 
+    async function logout() {
+        try {
+            const tokenAuth = "Bearer " + token.value;
+            await http.post('logout/', {
+                headers: {
+                    Authorization: tokenAuth
+                }
+            });
+        } catch (error) {
+            console.log('Logout API error:', error.response?.data || error);
+        } finally {
+            localStorage.removeItem('token');
+            token.value = null;
+        }
+    }
+
     return {
         token,
         setToken,
-        checkToken
+        checkToken,
+        logout
     }
 })
