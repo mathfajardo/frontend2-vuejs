@@ -34,7 +34,7 @@ async function login() {
   .then((response) => {
     console.log(response);
     auth.setToken(response.data.data.token);
-    router.push('/pdv');
+    router.push('/home');
   })
   .catch(error => {
     console.log("erro: ", error);

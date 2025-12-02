@@ -16,7 +16,7 @@ async function fazerLogout() {
 
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg fs-5">
   <div class="container-fluid">
-    <RouterLink class="navbar-brand" to="/pdv">Faja<span class="text-success">Loja</span></RouterLink>
+    <RouterLink class="navbar-brand" to="/home">Faja<span class="text-success">Loja</span></RouterLink>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -28,6 +28,10 @@ async function fazerLogout() {
 
         <li class="nav-item">
           <RouterLink class="nav-link" active-class="text-success" to="/clientes">Clientes</RouterLink>
+        </li>
+
+        <li class="nav-item">
+          <RouterLink class="nav-link" active-class="text-success" to="/pdv">PDV</RouterLink>
         </li>
 
         <li class="nav-item">
