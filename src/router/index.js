@@ -13,7 +13,10 @@ const router = createRouter({
     {
       path: '/',
       name: 'login',
-      component: TelaLogin
+      component: TelaLogin,
+      meta: {
+        esconderCabecalho: true
+      }
     },
     {
       path: '/pdv',

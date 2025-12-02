@@ -32,10 +32,10 @@ import axiosInstance from '@/services/http';
 
 <template>
 
-<h1 class="text-center text-black" style="padding-top: 100px;">Cadastro</h1>
+<h1 class="text-center text-black pt-5">Cadastro</h1>
 
 
-<div class="bg-body border p-3 rounded-3 shadow-sm">
+<div class="bg-body border p-3 shadow-sm">
     <form @submit="cadastrar_produto">
         <div class="mb-3">
             <label for="nome" class="form-label">Nome do produto</label>

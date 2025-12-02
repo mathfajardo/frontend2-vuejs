@@ -1,11 +1,23 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import axiosInstance from '@/services/http';
 
     // carregamento
     let carregamento = ref(true);
 
     const router = useRouter();
+
+    // função para enviar alert
+    let message = ref('');
+    let messageType = ref('success');
+    function showMessage(text, type = "success") {
+    message.value = text;
+    messageType.value = type;
+    setTimeout(() => {
+      message.value = "";
+      }, 5000);
+    } 
 
     // objetos
     let produtos = ref([]);
@@ -19,21 +31,27 @@ import { useRouter } from 'vue-router';
     });
 
     // buscar produtos e clientes
-    onMounted(async () => {
-        try {
-            //buscar produtos
-            const respostaProdutos = await fetch('http://localhost:8000/api/produtos/');
-            const dadosProdutos = await respostaProdutos.json();
-            produtos.value = dadosProdutos.data;
-
-            // buscar clientes
-            const respostaClientes = await fetch('http://localhost:8000/api/clientes/');
-            const dadosClientes = await respostaClientes.json();
-            clientes.value = dadosClientes.data;
+    onMounted(() => {
+        axiosInstance.get('/produtos/')
+        .then((response) => {
+            produtos.value = response.data.data;
             carregamento.value = false;
-        } catch(erro) {
-            console.error('erro ao carregar os dados da api: ', erro);
-        }
+        })
+        .catch(error => {
+            console.error('Erro: ', error);
+            carregamento.value = false;
+        })
+
+        // get para clientes
+        axiosInstance.get('/clientes/')
+        .then((response) => {
+            clientes.value = response.data.data;
+            carregamento.value = false
+        })
+        .catch(error => {
+            console.error('Erro: ', error);
+            carregamento.value = false;
+        })
     });
 
     // encontrar o produto selecionado
@@ -55,36 +73,28 @@ import { useRouter } from 'vue-router';
 
 
     // função para registrar a venda
-    async function registrarVenda(event) {
+    function registrarVenda(event) {
         event.preventDefault();
 
         // garantir que o valor está atualizado
         venda.value.valor_total = valorTotal.value;
 
-        try {
-            const resposta = await fetch('http://localhost:8000/api/vendas/', {
-                method: 'POST',
-                body: JSON.stringify(venda.value),
-                headers: {'Content-Type': 'application/json'}
-            });
-
-            const resultado = await resposta.json();
-
-            if (resultado.ok || resultado.status === 200) {
-                alert('Venda registrada com sucesso');
-                // limpar form
+        axiosInstance.post('/vendas', venda.value)
+        .then((response) => {
+            if (response.data.status === 200) {
+                showMessage(response.data.message, 'success');
                 venda.value = {
                     produto_id: '',
                     cliente_id: '',
                     quantidade: 1,
                     valor_total: 0
-                };
-                router.push('/pdv')
-            }
-        } catch (erro) {
-            console.error('Erro ao registrar a venda:', erro);
-            alert('Erro ao registrar a venda');
-        }
+                }
+            };
+        })
+        .catch(error => {
+            console.error('Erro ao registrar a venda: ', error);
+            showMessage(error.response?.data?.message || "erro ao registrar", 'error');
+        })
     }
         
 
@@ -92,6 +102,9 @@ import { useRouter } from 'vue-router';
 </script>
 
 <template>
+
+
+
 
 <div
     class="d-flex flex-column justify-content-center align-items-center"
@@ -105,7 +118,18 @@ import { useRouter } from 'vue-router';
 
 <h1 class="text-center text-black pt-5" v-if="!carregamento">PDV - Registre sua venda</h1>
 
-<div class="bg-light border p-3 rounded-3 shadow-sm" v-if="!carregamento">
+<div
+    v-if="message && !carregamento"
+    :class="`alert alert-${
+      messageType === 'error' ? 'danger' : messageType
+    } alert-dismissible fade show`"
+    role="alert"
+  >
+    {{ message }}
+    <button type="button" class="btn-close" @click="message = ''"></button>
+</div>
+
+<div class="bg-light border p-3 shadow-sm" v-if="!carregamento">
     <form @submit="registrarVenda">
         <div class="mb-3">
             <label for="produto" class="form-label">Selecione o produto</label>
