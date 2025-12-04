@@ -3,6 +3,7 @@ import {reactive, ref} from 'vue';
 import { useAuth } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 import axiosInstance from '@/services/http';
+import Swal from 'sweetalert2'
 
 
 const auth = useAuth();
@@ -38,7 +39,12 @@ async function login() {
   })
   .catch(error => {
     console.log("erro: ", error);
-    showMessage(error.response?.data?.data?.message || 'Não autenticado', 'error');
+    Swal.fire({
+      title: 'Login ou senha incorretos, tente novamente!',
+      confirmButtonColor: '#000000',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
   })
   .finally(() => {
     loading.value = false;
@@ -49,18 +55,6 @@ async function login() {
 
 <template>
 
-
-
-<div
-  v-if="message"
-  :class="`w-50 m-auto mb-1 alert alert-${
-    messageType === 'error' ? 'danger' : messageType
-  } alert-dismissible fade show`"
-  role="alert"
->
-  {{ message }}
-  <button type="button" class="btn-close" @click="message = ''"></button>
-</div>
 <div class="login-container">
   <div class="login bg-dark text-light rounded p-5 m-auto ">
   <h1 class="text-center text-black mt-5 mb-5 text-white">Faça seu login</h1>

@@ -1,11 +1,17 @@
 <script setup>
 import { useAuth } from '@/stores/auth';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2'
 
 const auth = useAuth();
 const router = useRouter();
 
 async function fazerLogout() {
+  Swal.fire({
+    title: 'Logout realizado',
+    confirmButtonColor: '#000000',
+    confirmButtonText: 'Ok'
+  });
   await auth.logout();
   router.push('/');
 }

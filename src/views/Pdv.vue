@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import axiosInstance from '@/services/http';
+import Swal from 'sweetalert2'
 
     // carregamento
     let carregamento = ref(true);
@@ -82,7 +83,12 @@ import axiosInstance from '@/services/http';
         axiosInstance.post('/vendas', venda.value)
         .then((response) => {
             if (response.data.status === 200) {
-                showMessage(response.data.message, 'success');
+                Swal.fire({
+                    title: response.data.message,
+                    icon: 'success',
+                    confirmButtonColor: '#000000',
+                    confirmButtonText: 'Ok'
+                });
                 venda.value = {
                     produto_id: '',
                     cliente_id: '',
@@ -93,7 +99,13 @@ import axiosInstance from '@/services/http';
         })
         .catch(error => {
             console.error('Erro ao registrar a venda: ', error);
-            showMessage(error.response?.data?.message || "erro ao registrar", 'error');
+            Swal.fire({
+                title: 'Não foi possível deletar',
+                text: 'favor entrar em contato com o adm do sistema',
+                icon: 'error',
+                confirmButtonColor: '#000000',
+                confirmButtonText: 'Ok'
+            });
         })
     }
         
@@ -117,17 +129,6 @@ import axiosInstance from '@/services/http';
 </div>
 
 <h1 class="text-center text-black pt-5" v-if="!carregamento">PDV - Registre sua venda</h1>
-
-<div
-    v-if="message && !carregamento"
-    :class="`alert alert-${
-      messageType === 'error' ? 'danger' : messageType
-    } alert-dismissible fade show`"
-    role="alert"
-  >
-    {{ message }}
-    <button type="button" class="btn-close" @click="message = ''"></button>
-</div>
 
 <div class="bg-light border p-3 shadow-sm" v-if="!carregamento">
     <form @submit="registrarVenda">

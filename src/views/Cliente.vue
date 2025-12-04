@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axiosInstance from '@/services/http';
+import Swal from 'sweetalert2'
 
     // iniciando o array produtos
     let clientes = ref([]);
@@ -9,17 +10,6 @@ import axiosInstance from '@/services/http';
 
     // carregamento
     let carregamento = ref(true);
-
-    // função para enviar alert
-    let message = ref('');
-    let messageType = ref('success');
-    function showMessage(text, type = "success") {
-    message.value = text;
-    messageType.value = type;
-    setTimeout(() => {
-      message.value = "";
-      }, 5000);
-    } 
 
     onMounted(() => {
         axiosInstance.get('/clientes/')
@@ -42,11 +32,22 @@ import axiosInstance from '@/services/http';
         clientes.value = clientes.value.filter(c => c.id !== cliente.id);
         clientesOriginal.value = clientesOriginal.value.filter(c => c.id !== cliente.id);
         console.log(response.data);
-        showMessage(response.data.message, 'success');
+        Swal.fire({
+          title: 'Cliente removido com sucesso!',
+          icon: 'success',
+          confirmButtonColor: '#000000',
+          confirmButtonText: 'Ok'
+        });
       })
       .catch(error => {
         console.error('Erro: ', error);
-        showMessage('Erro ao deletar', 'error')
+        Swal.fire({
+          title: 'Não foi possível deletar',
+          text: 'favor entrar em contato com o adm do sistema',
+          icon: 'error',
+          confirmButtonColor: '#000000',
+          confirmButtonText: 'Ok'
+        });
       })
     }
 
@@ -86,17 +87,6 @@ import axiosInstance from '@/services/http';
 
 
 <h1 class="text-center text-black pt-5" v-if="!carregamento">Lista de clientes</h1>
-
-<div
-    v-if="message && !carregamento"
-    :class="`alert alert-${
-      messageType === 'error' ? 'danger' : messageType
-    } alert-dismissible fade show`"
-    role="alert"
-  >
-    {{ message }}
-    <button type="button" class="btn-close" @click="message = ''"></button>
-</div>
 
 <div class="d-flex aling-items-center" v-if="!carregamento">
 

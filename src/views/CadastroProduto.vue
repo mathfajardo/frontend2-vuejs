@@ -2,16 +2,17 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axiosInstance from '@/services/http';
+import Swal from 'sweetalert2'
 
     // iniciando o router
     const router = useRouter();
 
     // criando objeto para armazenar os dados antes do post
     let obj = ref({
-        'id': 0,
+        'id': null,
         'nome_produto': '',
         'categoria': 'Selecione uma categoria',
-        'valor_produto': 0
+        'valor_produto': null
     });
 
     // função para cadastrar
@@ -20,10 +21,23 @@ import axiosInstance from '@/services/http';
 
         axiosInstance.post('/produtos/', obj.value)
         .then(response => {
+            Swal.fire({
+                title: response.data.message || "Produto cadastrado com sucesso!",
+                icon: 'success',
+                confirmButtonColor: '#000000',
+                confirmButtonText: 'Ok'
+            });
             router.push('/produtos')
         })
         .catch(error => {
             console.error('Erro: ', error);
+            Swal.fire({
+                title: 'Não foi cadastrar!',
+                text: 'favor entrar em contato com o adm do sistema',
+                icon: 'error',
+                confirmButtonColor: '#000000',
+                confirmButtonText: 'Ok'
+            });
         }) 
     }
 

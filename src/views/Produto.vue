@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axiosInstance from '@/services/http';
+import Swal from 'sweetalert2'
 
     // iniciando o array produtos
     let produtos = ref([]);
@@ -9,17 +10,6 @@ import axiosInstance from '@/services/http';
 
     // carregamento
     let carregamento = ref(true);
-
-    // função para enviar alert
-    let message = ref('');
-    let messageType = ref('success');
-    function showMessage(text, type = "success") {
-    message.value = text;
-    messageType.value = type;
-    setTimeout(() => {
-      message.value = "";
-      }, 5000);
-    } 
 
     onMounted(() => {
         axiosInstance.get('/produtos/')
@@ -42,11 +32,22 @@ import axiosInstance from '@/services/http';
         produtos.value = produtos.value.filter(p => p.id !== produto.id);
         produtosOriginal.value = produtosOriginal.value.filter(p => p.id !== produto.id);
         console.log(response.data);
-        showMessage(response.data.message, 'success');
+        Swal.fire({
+          title: 'Produto removido com sucesso!',
+          icon: 'success',
+          confirmButtonColor: '#000000',
+          confirmButtonText: 'Ok'
+        });
       })
       .catch(error => {
         console.error('Erro: ', error);
-        showMessage('Erro ao deletar', 'error')
+        Swal.fire({
+          title: 'Não foi possível deletar',
+          text: 'favor entrar em contato com o adm do sistema',
+          icon: 'error',
+          confirmButtonColor: '#000000',
+          confirmButtonText: 'Ok'
+        });
       })
     }
 
@@ -85,18 +86,7 @@ import axiosInstance from '@/services/http';
 
 <h1 class="text-center text-black pt-5" v-if="!carregamento">Lista de produtos</h1>
 
-<div
-    v-if="message && !carregamento"
-    :class="`alert alert-${
-      messageType === 'error' ? 'danger' : messageType
-    } alert-dismissible fade show`"
-    role="alert"
-  >
-    {{ message }}
-    <button type="button" class="btn-close" @click="message = ''"></button>
-</div>
 <div class="d-flex aling-items-center" v-if="!carregamento">
-
 <RouterLink class="text-center btn btn-primary m-2" to="/cadastroprodutos">
   Cadastrar novo produto
 </RouterLink>
