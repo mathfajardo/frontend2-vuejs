@@ -49,7 +49,7 @@ async function login() {
 
 <template>
 
-<h1 class="text-center text-black" style="padding-top: 100px;">Faça seu login</h1>
+
 
 <div
   v-if="message"
@@ -61,30 +61,47 @@ async function login() {
   {{ message }}
   <button type="button" class="btn-close" @click="message = ''"></button>
 </div>
+<div class="login-container">
+  <div class="login bg-dark text-light rounded p-5 m-auto ">
+  <h1 class="text-center text-black mt-5 mb-5 text-white">Faça seu login</h1>
+  <form @submit.prevent="login">
+    <div class="mb-3">
+      <label for="email" class="form-label fs-5">Email</label>
+      <input type="email" class="form-control" v-model="user.email" placeholder="Digite seu email..." required>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label fs-5">Senha</label>
+      <input type="password" class="form-control" v-model="user.password" placeholder="Digite sua senha..." required>
+    </div>
 
-<div class="bg-body border p-3 shadow-sm w-50 m-auto">
-<form @submit.prevent="login">
-  <div class="mb-3">
-    <label for="email" class="form-label">Email</label>
-    <input type="email" class="form-control" v-model="user.email" required>
+    <div class="mb-3">
+      <router-link class="link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover text-light" to="/registro">Não tem login? cadastre aqui </router-link>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">
+      <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>{{ loading ? 'Entrando...' : 'Entrar' }}
+    </button>
+  </form>
+
+
   </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Senha</label>
-    <input type="password" class="form-control" v-model="user.password" required>
-  </div>
-
-  <div class="mb-3">
-    <router-link class="link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" to="/registro">Não tem login? cadastre aqui </router-link>
-  </div>
-  
-  <button type="submit" class="btn btn-primary">
-    <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>{{ loading ? 'Entrando...' : 'Entrar' }}
-  </button>
-</form>
-
-
 </div>
 
 
-
 </template>
+
+<style scoped>
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login {
+  width: 30%;
+  box-shadow: 0 0 10px 2px black;
+}
+
+
+</style>
