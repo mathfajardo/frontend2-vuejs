@@ -7,6 +7,9 @@ import Swal from 'sweetalert2'
     // iniciando o router
     const router = useRouter();
 
+    // variavel loading
+    let loading = ref(false);
+
     // criando objeto para armazenar os dados antes do post
     let obj = ref({
         'id': null,
@@ -18,14 +21,18 @@ import Swal from 'sweetalert2'
     // função para cadastrar
     function cadastrar_produto(event) {
         event.preventDefault();
+        loading.value = true;
 
         axiosInstance.post('/produtos/', obj.value)
         .then(response => {
             Swal.fire({
-                title: response.data.message || "Produto cadastrado com sucesso!",
+                position: 'top-end',
+                title: response.data.message,
                 icon: 'success',
-                confirmButtonColor: '#000000',
-                confirmButtonText: 'Ok'
+                toast: true,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
             });
             router.push('/produtos')
         })
@@ -38,6 +45,7 @@ import Swal from 'sweetalert2'
                 confirmButtonColor: '#000000',
                 confirmButtonText: 'Ok'
             });
+            loading.value = false;
         }) 
     }
 
@@ -74,7 +82,7 @@ import Swal from 'sweetalert2'
             <input type="number" class="form-control" v-model="obj.valor_produto">
         </div>
 
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <button type="submit" class="btn btn-primary" :disabled="loading"><span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>{{ loading ? "Cadastrando..." : "Cadastrar" }}</button>
 
     </form>
 </div>

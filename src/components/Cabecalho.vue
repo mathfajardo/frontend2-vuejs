@@ -8,9 +8,14 @@ const router = useRouter();
 
 async function fazerLogout() {
   Swal.fire({
+    position: 'top-end',
+    icon: 'success',
     title: 'Logout realizado',
     confirmButtonColor: '#000000',
-    confirmButtonText: 'Ok'
+    showConfirmButton: false,
+    toast: true,
+    timer: 2000,
+    timerProgressBar: true
   });
   await auth.logout();
   router.push('/');

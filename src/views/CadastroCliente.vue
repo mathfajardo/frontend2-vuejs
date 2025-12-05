@@ -1,8 +1,11 @@
 <script setup>
+import axiosInstance from '@/services/http';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2'
 
-
+    // variavel de loading
+    let loading = ref(false);
 
     // iniciando o router
     const router = useRouter();
@@ -10,39 +13,43 @@ import { useRouter } from 'vue-router';
     // vetor para armazenar os produtos
     let clientes = ref([]);
 
-    onMounted(() => {
-        fetch('http://localhost:8000/api/produtos/')
-        .then(requisicao => requisicao.json())
-        .then(retorno => clientes.value = retorno.data)
-    });
-
-    
-
-    
-
     // criando objeto para armazenar os dados antes do post
     let obj = ref({
-        'id': 0,
+        'id': null,
         'nome_cliente': '',
         'data_nascimento': '',
-        'ativo': 0
+        'ativo': 1
     });
 
     // função para cadastrar
-    function cadastrar_produto(event) {
+    function cadastrar_cliente(event) {
         event.preventDefault();
+        loading.value = true;
 
-        fetch('http://localhost:8000/api/clientes/', {
-            method: 'POST',
-            body: JSON.stringify(obj.value),
-            headers: {'Content-Type':'application/json'}
-        })
-        .then(requisicao =>requisicao.json())
-        .then(retorno => {
-            clientes.value.push(retorno.data)
-
+        axiosInstance.post('/clientes/', obj.value)
+        .then(response => {
+            Swal.fire({
+                position: 'top-end',
+                title: response.data.message,
+                icon: 'success',
+                toast: true,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
             router.push('/clientes')
         })
+        .catch(error => {
+            console.error('Erro: ', error);
+            Swal.fire({
+                title: 'Não foi cadastrar!',
+                text: 'favor entrar em contato com o adm do sistema',
+                icon: 'error',
+                confirmButtonColor: '#000000',
+                confirmButtonText: 'Ok'
+            });
+            loading.value = false;
+        }) 
     }
 
 
@@ -54,7 +61,7 @@ import { useRouter } from 'vue-router';
 
 
 <div class="bg-body border p-3 shadow-sm">
-    <form @submit="cadastrar_produto">
+    <form @submit="cadastrar_cliente">
         <div class="mb-3">
             <label for="nome" class="form-label">Nome do cliente</label>
             <input type="text" class="form-control" v-model="obj.nome_cliente">
@@ -73,7 +80,7 @@ import { useRouter } from 'vue-router';
         </div>
         
 
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <button type="submit" class="btn btn-primary" :disabled="loading"><span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>{{ loading ? "Cadastrando..." : "Cadastrar" }}</button>
 
     </form>
 </div>

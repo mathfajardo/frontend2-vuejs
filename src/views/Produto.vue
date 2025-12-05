@@ -52,7 +52,7 @@ import Swal from 'sweetalert2'
     }
 
     // pesquisar
-    function pesquisar(event) {
+    function pesquisar() {
       if (!termoPesquisa.value.trim()) {
         produtos.value = produtosOriginal.value;
         return;
@@ -65,7 +65,6 @@ import Swal from 'sweetalert2'
         produto.valor_produto.toLowerCase().includes(termo)
       );
 
-      event.preventDefault();
       termoPesquisa.value = '';
     }
 
@@ -90,7 +89,7 @@ import Swal from 'sweetalert2'
 <RouterLink class="text-center btn btn-primary m-2" to="/cadastroprodutos">
   Cadastrar novo produto
 </RouterLink>
-<form class="d-flex m-2" role="search" @submit="pesquisar">
+<form class="d-flex m-2" role="search" @submit.prevent="pesquisar">
       <input class="form-control me-2" type="search" placeholder="Pesquisar..." v-model="termoPesquisa">
       <button class="btn btn-success" type="submit">Pesquisar</button>
 </form>
