@@ -115,7 +115,7 @@ import Swal from 'sweetalert2'
         <td>{{ c.nome_cliente }}</td>
         <td>{{ c.data_nascimento}}</td>
         <td>{{ c.ativo }}</td>
-        <td><RouterLink class="btn btn-outline-primary">Editar</RouterLink></td>
+        <td><RouterLink class="btn btn-outline-primary" to="/clientes">Editar</RouterLink></td>
         <td><button class="btn btn-outline-danger" @click="remover(c)">Deletar</button></td>
       </tr>
 

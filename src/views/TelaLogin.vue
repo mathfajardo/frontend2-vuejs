@@ -12,17 +12,6 @@ const router = useRouter();
 // variavel de carregamentos
 let loading = ref(false);
 
-// função para mostrar mensagens
-let message = ref("");
-let messageType = ref("");
-function showMessage(text, type = "success") {
-  message.value = text;
-  messageType.value = type;
-  setTimeout(() => {
-    message.value = "";
-  }, 5000);
-}
-
 const user = reactive({
   email: '',
   password: ''
