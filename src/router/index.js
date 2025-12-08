@@ -8,6 +8,7 @@ import TelaLogin from '@/views/TelaLogin.vue'
 import { useAuth } from '@/stores/auth';
 import TelaRegistro from '@/views/TelaRegistro.vue'
 import Home from '@/views/Home.vue'
+import Venda from '@/views/Venda.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,6 +73,14 @@ const router = createRouter({
       path: '/cadastroclientes',
       name: 'cadastroclientes',
       component: CadastroCliente,
+      meta: {
+        auth:true
+      }
+    },
+    {
+      path: '/vendas',
+      name: 'vendas',
+      component: Venda,
       meta: {
         auth:true
       }
