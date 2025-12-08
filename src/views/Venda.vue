@@ -1,6 +1,7 @@
 <script setup>
 import axiosInstance from '@/services/http';
 import { onMounted, ref } from 'vue';
+import Swal from 'sweetalert2';
 
 
     // iniciando arrays
@@ -10,20 +11,6 @@ import { onMounted, ref } from 'vue';
 
     // carregamento
     let carregamento = ref(true);
-
-    onMounted(() => {
-        axiosInstance.get('/vendas/')
-        .then(response => {
-            console.log("Resposta -> ", response.data.data);
-            vendas.value = response.data.data;
-            vendasOriginal.value = response.data.data;
-            carregamento.value = false;
-        })
-        .catch(error => {
-            console.error("Erro: ", error);
-            carregamento.value = false;
-        })
-    });
 
     // pesquisar
     function pesquisar() {
@@ -40,6 +27,47 @@ import { onMounted, ref } from 'vue';
         termoPesquisa.value = '';
         
     }
+
+    onMounted(() => {
+        axiosInstance.get('/vendas/')
+        .then(response => {
+            console.log("Resposta -> ", response.data.data);
+            vendas.value = response.data.data;
+            vendasOriginal.value = response.data.data;
+            carregamento.value = false;
+        })
+        .catch(error => {
+            console.error("Erro: ", error);
+            carregamento.value = false;
+        })
+    });
+
+    function remover(venda) {
+
+        axiosInstance.delete(`/vendas/${venda.id}`)
+        .then(response => {
+            vendas.value = vendas.value.filter(v => v.id !== venda.id);
+            vendasOriginal.value = vendasOriginal.value.filter(v => v.id !== venda.id)
+            Swal.fire({
+                title: 'Produto removido com sucesso!',
+                icon: 'success',
+                confirmButtonColor: '#000000',
+                confirmButtonText: 'Ok'
+            });
+        })
+        .catch(error => {
+            console.error('Erro: ', error);
+            Swal.fire({
+            title: 'Não foi possível deletar',
+            text: 'favor entrar em contato com o adm do sistema',
+            icon: 'error',
+            confirmButtonColor: '#000000',
+            confirmButtonText: 'Ok'
+            });
+        })
+    }
+
+    
 
 
 
