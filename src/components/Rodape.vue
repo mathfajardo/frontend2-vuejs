@@ -1,5 +1,5 @@
 <template>
-  <footer class="navbar navbar-dark bg-dark navbar-expand-lg">
+  <footer class="navbar navbar-dark bg-dark navbar-expand-lg fixed-bottom">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <div class="small text-white-50">
         © 2025 FajaLoja — Todos os direitos

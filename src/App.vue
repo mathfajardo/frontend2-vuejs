@@ -19,7 +19,7 @@
 
 <template>
   <Cabecalho v-if="!esconderCabecalho"></Cabecalho>
-  <div class="bg-body-secondary bg-gradient min-vh-100">
+  <div class="bg-body-secondary bg-gradient min-vh-100 pb-5">
     <div class="container">
     
     <RouterView></RouterView>

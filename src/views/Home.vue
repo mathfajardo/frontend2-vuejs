@@ -10,15 +10,37 @@ let carregamento = ref(true);
 // iniciar a variavel
 let totalProdutos = ref(0);
 let totalClientes = ref(0);
+let totalVendas = ref(0);
+let totalValorVendido = ref(0);
+let totalValorVendidoDia = ref(0);
+let totalValorVendidoMes = ref(0);
+
+// formatar valor
+function formatarValor(valor) {
+	if (!valor) return 'R$ 0,00';
+
+	return Number(valor).toLocaleString('pt-BR', {
+		style: 'currency',
+		currency: 'BRL',
+	});
+}
 
 onMounted(() => {
     Promise.all([
         axiosInstance.get('/produtosTotal'),
-        axiosInstance.get('/clientesTotal')
+        axiosInstance.get('/clientesTotal'),
+        axiosInstance.get('/vendasTotal'),
+        axiosInstance.get('/vendasValorTotal'),
+        axiosInstance.get('/vendasValorTotalDia'),
+        axiosInstance.get('/vendasValorTotalMes')
     ])
     .then(responses => {
         totalProdutos.value = responses[0].data.data.total;
         totalClientes.value = responses[1].data.data.total;
+        totalVendas.value = responses[2].data.data.total;
+        totalValorVendido.value = responses[3].data.data.valor_total;
+        totalValorVendidoDia.value = responses[4].data.data.valor_total;
+        totalValorVendidoMes.value = responses[5].data.data.valor_total;
     })
     .catch(error => {
         console.error('Erro ao carregar os dados: ', error);
@@ -56,7 +78,7 @@ onMounted(() => {
             <i class="bi bi-box-seam display-4 text-success"></i>
             </div>
             <h5 class="card-title text-white-75 fw-semibold mb-3">Total de produtos</h5>
-            <h3 class="card-text display-4 fw-bold text-white">{{ totalProdutos }}</h3>
+            <h3 class="card-text display-4 fs-1 fw-bold text-white">{{ totalProdutos }}</h3>
         </div>
     </div>
 
@@ -66,7 +88,47 @@ onMounted(() => {
             <i class="bi bi-people-fill display-4 text-success"></i>
             </div>
             <h5 class="card-title text-white-75 fw-semibold mb-3">Total de clientes</h5>
-            <h3 class="card-text display-4 fw-bold text-white">{{ totalClientes }}</h3>
+            <h3 class="card-text display-4 fs-1 fw-bold text-white">{{ totalClientes }}</h3>
+        </div>
+    </div>
+
+    <div class="card border-0 rounded-4 bg-dark text-white" style="width: 20rem;">
+        <div class="card-body p-4 text-center">
+            <div class="d-flex justify-content-center mb-3">
+            <i class="bi bi-cash display-4 text-success"></i>
+            </div>
+            <h5 class="card-title text-white-75 fw-semibold mb-3">Total de vendas da loja</h5>
+            <h3 class="card-text display-4 fs-1 fw-bold text-white">{{ totalVendas }}</h3>
+        </div>
+    </div>
+
+    <div class="card border-0 rounded-4 bg-dark text-white" style="width: 20rem;">
+        <div class="card-body p-4 text-center">
+            <div class="d-flex justify-content-center mb-3">
+            <i class="bi bi-cash display-4 text-success"></i>
+            </div>
+            <h5 class="card-title text-white-75 fw-semibold mb-3">Valor total vendido</h5>
+            <h3 class="card-text display-4 fs-1 fw-bold text-white">{{ formatarValor(totalValorVendido) }}</h3>
+        </div>
+    </div>
+
+    <div class="card border-0 rounded-4 bg-dark text-white" style="width: 20rem;">
+        <div class="card-body p-4 text-center">
+            <div class="d-flex justify-content-center mb-3">
+            <i class="bi bi-cash display-4 text-success"></i>
+            </div>
+            <h5 class="card-title text-white-75 fw-semibold mb-3">Valor total vendido hoje</h5>
+            <h3 class="card-text display-4 fs-1 fw-bold text-white">{{ formatarValor(totalValorVendidoDia) }}</h3>
+        </div>
+    </div>
+
+    <div class="card border-0 rounded-4 bg-dark text-white" style="width: 20rem;">
+        <div class="card-body p-4 text-center">
+            <div class="d-flex justify-content-center mb-3">
+            <i class="bi bi-cash display-4 text-success"></i>
+            </div>
+            <h5 class="card-title text-white-75 fw-semibold mb-3">Valor total vendido no mês</h5>
+            <h3 class="card-text display-4 fs-1 fw-bold text-white">{{ formatarValor(totalValorVendidoMes) }}</h3>
         </div>
     </div>
 </div>
