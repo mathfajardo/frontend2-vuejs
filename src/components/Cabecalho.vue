@@ -42,12 +42,14 @@ async function fazerLogout() {
         </li>
 
         <li class="nav-item">
-          <RouterLink class="nav-link" active-class="text-success" to="/pdv">PDV</RouterLink>
+          <RouterLink class="nav-link" active-class="text-success" to="/vendas">Vendas</RouterLink>
         </li>
 
         <li class="nav-item">
-          <RouterLink class="nav-link" active-class="text-success" to="/vendas">Vendas</RouterLink>
+          <RouterLink class="nav-link" active-class="text-success" to="/pdv">PDV</RouterLink>
         </li>
+
+        
 
         <li class="nav-item">
           <a class="nav-link text-danger" @click.prevent="fazerLogout" style="cursor: pointer;">Logout</a>

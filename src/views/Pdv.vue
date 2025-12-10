@@ -119,13 +119,13 @@ import Swal from 'sweetalert2'
 
 
 <div
-    class="d-flex flex-column justify-content-center align-items-center"
+    class="d-flex flex-column justify-content-center align-items-center vh-100"
     v-if="carregamento"
-  >
-    <div class="spinner-border mb-3 mt-5" style="width: 4rem; height: 4rem">
-      <span class="visually-hidden">Aguarde...</span>
+>
+    <div class="spinner-border">
+        <span class="visually-hidden">Aguarde...</span>
     </div>
-    <p class="text-muted">Aguarde...</p>
+    <p class="mt-2">Carregando...</p>
 </div>
 
 <h1 class="text-center text-black pt-5" v-if="!carregamento">PDV - Registre sua venda</h1>
