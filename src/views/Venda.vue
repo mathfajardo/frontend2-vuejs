@@ -12,6 +12,13 @@ import Swal from 'sweetalert2';
     // carregamento
     let carregamento = ref(true);
 
+    // formatar data
+    function formatarData(data) {
+      return new Date(data).toLocaleDateString('pt-br', {
+        timeZone: 'UTC'
+      })
+    }
+
     // pesquisar
     function pesquisar() {
         if (!termoPesquisa.value.trim()) {
@@ -49,7 +56,7 @@ import Swal from 'sweetalert2';
             vendas.value = vendas.value.filter(v => v.id !== venda.id);
             vendasOriginal.value = vendasOriginal.value.filter(v => v.id !== venda.id)
             Swal.fire({
-                title: 'Produto removido com sucesso!',
+                title: response.data.message,
                 icon: 'success',
                 confirmButtonColor: '#000000',
                 confirmButtonText: 'Ok'
@@ -105,6 +112,7 @@ import Swal from 'sweetalert2';
         <th scope="col">Nome do produto</th>
         <th scope="col">Nome do cliente</th>
         <th scope="col">Valor total</th>
+        <th scope="col">Data da venda</th>
         <th scope="col">Editar</th>
         <th scope="col">Deletar</th>
       </tr>
@@ -114,12 +122,13 @@ import Swal from 'sweetalert2';
         <td>{{ v.produto.nome_produto }}</td>
         <td>{{ v.cliente.nome_cliente}}</td>
         <td>R$ {{ v.valor_total }}</td>
+        <td>{{ formatarData(v.created_at) }}</td>
         <td><RouterLink class="btn btn-outline-primary" to="/produtos">Editar</RouterLink></td>
         <td><button class="btn btn-outline-danger" @click="remover(v)">Deletar</button></td>
       </tr>
 
       <tr v-if="vendas.length === 0">
-        <td colspan="5" class="text-center py-3 text-muted">
+        <td colspan="6" class="text-center py-3 text-muted">
           Nenhuma venda encontrado.
         </td>
       </tr>
