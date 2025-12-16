@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://69.6.221.138:8000/api',
+    baseURL: 'http://api.fajatech.com.br/api',
     headers: {
         'Content-Type': 'application/json'
     }
