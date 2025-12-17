@@ -9,6 +9,7 @@ import { useAuth } from '@/stores/auth';
 import TelaRegistro from '@/views/TelaRegistro.vue'
 import Home from '@/views/Home.vue'
 import Venda from '@/views/Venda.vue'
+import NotFound from '@/views/NotFound.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,14 @@ const router = createRouter({
       path: '/registro',
       name: 'registro',
       component: TelaRegistro,
+      meta: {
+        esconderCabecalho: true
+      }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFound,
       meta: {
         esconderCabecalho: true
       }
