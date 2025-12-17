@@ -35,8 +35,8 @@ function cadastrar_usuario(event) {
 
 
 <div class="registro-container">
-    <div class="registro bg-dark text-light rounded p-5 m-auto ">
-        <h1 class="text-center mt-5 mb-4 text-light">Registre-se</h1>
+    <div class="registro bg-dark text-light rounded p-3 p-md-5 m-auto w-30 w-md-100 w-lg-50 w-xl-100">
+        <h1 class="text-center text-white mt-3 mt-md-5 mb-4 mb-md-5 h3 h2-md">Registre-se</h1>
         <form @submit="cadastrar_usuario">
             <div class="mb-3">
                 <label for="nome" class="form-label fs-5">Usuário</label>
@@ -73,10 +73,11 @@ function cadastrar_usuario(event) {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  padding: 15px;
 }
 
 .registro {
-  width: 30%;
+  width: 0 0 10px 2px black;
   box-shadow: 0 0 10px 2px black;
 }
 </style>
