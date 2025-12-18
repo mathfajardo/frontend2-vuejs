@@ -10,6 +10,7 @@ import TelaRegistro from '@/views/TelaRegistro.vue'
 import Home from '@/views/Home.vue'
 import Venda from '@/views/Venda.vue'
 import NotFound from '@/views/NotFound.vue'
+import EditarProduto from '@/views/EditarProduto.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,6 +67,14 @@ const router = createRouter({
       path: '/cadastroprodutos',
       name: 'cadastroprodutos',
       component: CadastroProduto,
+      meta: {
+        auth:true
+      }
+    },
+    {
+      path: '/editarprodutos/:id',
+      name: 'editarprodutos',
+      component: EditarProduto,
       meta: {
         auth:true
       }

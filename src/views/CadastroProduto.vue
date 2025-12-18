@@ -39,7 +39,7 @@ import Swal from 'sweetalert2'
         .catch(error => {
             console.error('Erro: ', error);
             Swal.fire({
-                title: 'Não foi cadastrar!',
+                title: 'Não foi possivel cadastrar!',
                 text: 'favor entrar em contato com o adm do sistema',
                 icon: 'error',
                 confirmButtonColor: '#000000',

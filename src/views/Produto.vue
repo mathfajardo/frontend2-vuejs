@@ -112,7 +112,7 @@ import Swal from 'sweetalert2'
         <td>{{ p.nome_produto }}</td>
         <td>{{ p.categoria}}</td>
         <td>R$ {{ p.valor_produto }}</td>
-        <td><RouterLink class="btn btn-outline-primary" to="/produtos">Editar</RouterLink></td>
+        <td><RouterLink class="btn btn-outline-primary" :to="`/editarprodutos/${p.id}`">Editar</RouterLink></td>
         <td><button class="btn btn-outline-danger" @click="remover(p)">Deletar</button></td>
       </tr>
 
