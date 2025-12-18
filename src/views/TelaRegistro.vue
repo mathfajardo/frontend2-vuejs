@@ -54,7 +54,7 @@ function cadastrar_usuario(event) {
             
 
             <button type="submit" class="btn btn-primary m-1">
-                <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>{{ loading ? 'Entrando...' : 'Entrar' }}
+                <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>{{ loading ? 'Cadastrando...' : 'Cadastar' }}
             </button>
             <RouterLink class="btn btn-warning" to="/">Já tem uma conta?</RouterLink>
 

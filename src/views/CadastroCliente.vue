@@ -68,7 +68,7 @@ import Swal from 'sweetalert2'
         </div>
 
         <div class="mb-3">
-            <label for="nome" class="form-label">Data de nascimetno</label>
+            <label for="nome" class="form-label">Data de nascimento</label>
             <input type="date" class="form-control" v-model="obj.data_nascimento">
         </div>
         <div class="mb-3">
