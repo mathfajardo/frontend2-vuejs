@@ -11,6 +11,12 @@ import Swal from 'sweetalert2'
     // carregamento
     let carregamento = ref(true);
 
+    function formatarData(data) {
+      return new Date(data).toLocaleDateString('pt-br', {
+        timeZone: 'UTC'
+      })
+    }
+
     onMounted(() => {
         axiosInstance.get('/clientes/')
         .then((response) => {
@@ -113,9 +119,9 @@ import Swal from 'sweetalert2'
     <tbody>
       <tr v-for="(c, indice) in clientes">
         <td>{{ c.nome_cliente }}</td>
-        <td>{{ c.data_nascimento}}</td>
+        <td>{{ formatarData(c.data_nascimento)}}</td>
         <td>{{ c.ativo }}</td>
-        <td><RouterLink class="btn btn-outline-primary" to="/clientes">Editar</RouterLink></td>
+        <td><RouterLink class="btn btn-outline-primary" :to="`/editarclientes/${c.id}`">Editar</RouterLink></td>
         <td><button class="btn btn-outline-danger" @click="remover(c)">Deletar</button></td>
       </tr>
 
