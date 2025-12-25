@@ -3,7 +3,7 @@
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: blue;
+    border-color: darkgreen;
     box-shadow: none;
 }
 

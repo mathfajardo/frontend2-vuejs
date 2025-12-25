@@ -85,7 +85,7 @@ async function login() {
 
 .login {
   width: 0 0 10px 2px black;
-  box-shadow: 0 0 10px 2px black;
+  box-shadow: 0 0 10px 1px darkgreen;
 }
 
 
