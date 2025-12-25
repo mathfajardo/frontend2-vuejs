@@ -45,7 +45,8 @@ async function login() {
 <template>
 
 <div class="login-container">
-  <div class="login bg-dark text-light rounded p-3 p-md-5 m-auto w-30 w-md-100 w-lg-50 w-xl-100">
+  <div class="login bg-dark text-light  p-3 p-md-5 m-auto w-30 w-md-100 w-lg-50 w-xl-100">
+  <h1 class="text-center text-white mt-3 mt-md-5 mb-4 mb-md-5 h3 h2-md fw-bold">Faja<span class="text-success">Loja</span></h1>
   <h1 class="text-center text-white mt-3 mt-md-5 mb-4 mb-md-5 h3 h2-md">Faça seu login</h1>
   <form @submit.prevent="login">
     <div class="mb-3">
@@ -86,6 +87,8 @@ async function login() {
   width: 0 0 10px 2px black;
   box-shadow: 0 0 10px 2px black;
 }
+
+
 
 
 </style>
