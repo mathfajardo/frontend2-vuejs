@@ -25,7 +25,7 @@ async function fazerLogout() {
 <template>
     
 
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg fs-5">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg fs-6 fw-bold">
   <div class="container-fluid">
     <RouterLink class="navbar-brand" to="/home">Faja<span class="text-success">Loja</span></RouterLink>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,20 +53,24 @@ async function fazerLogout() {
           </ul>
         </li>
 
-        <li class="nav-item dropdown me-5">
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             PDV
           </a>
-          <ul class="dropdown-menu dropdown-menu-dark" >
+          <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" >
             <li><RouterLink to="/vendas" class="dropdown-item" active-class="text-success">Visualizar vendas</RouterLink></li>
             <li><RouterLink to="/pdv" class="dropdown-item" active-class="text-success">Registrar venda</RouterLink></li>
           </ul>
         </li>
 
-        
-
-        <li class="nav-item">
-          <a class="nav-link text-danger" @click.prevent="fazerLogout" style="cursor: pointer;"><i class="bi bi-box-arrow-right"></i></a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+            <li><RouterLink to="/vendas" class="dropdown-item" active-class="text-success">Alterar senha</RouterLink></li>
+            <li><a class="text-danger dropdown-item" @click.prevent="fazerLogout" style="cursor: pointer;"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
+          </ul>
         </li>
       </ul>
     </div>
